@@ -2,13 +2,13 @@ name:                robot
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/robot#readme
+homepage:            https://github.com/Itamaram/haskell-robot
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2017 Author name here
-category:            Web
+author:              Itamar Amith
+maintainer:          itamaram@gmail.com
+copyright:           2017 Itamar Amith
+category:            Test
 build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
@@ -38,4 +38,4 @@ test-suite robot-test
 
 source-repository head
   type:     git
-  location: https://github.com/githubuser/robot
+  location: https://github.com/Itamaram/haskell-robot
