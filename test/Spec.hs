@@ -64,15 +64,15 @@ main = hspec $ do
 
   describe "Left Command" $ do
     it "doesn't place a robot on the board" $ do
-      run Nothing t5 Lib.Left `shouldBe` (Nothing, Nothing)
+      run Nothing t5 TurnLeft `shouldBe` (Nothing, Nothing)
     it "rotates a robot on the board to the left" $ do
-      run (Just $ Robot 0 0 N) t5 Lib.Left `shouldBe` (Just $ Robot 0 0 W, Nothing)
+      run (Just $ Robot 0 0 N) t5 TurnLeft `shouldBe` (Just $ Robot 0 0 W, Nothing)
 
   describe "Right Command" $ do
     it "doesn't place a robot on the board" $ do
-      run Nothing t5 Lib.Right `shouldBe` (Nothing, Nothing)
+      run Nothing t5 TurnRight `shouldBe` (Nothing, Nothing)
     it "rotates a robot on the board to the right" $ do
-      run (Just $ Robot 0 0 N) t5 Lib.Right `shouldBe` (Just $ Robot 0 0 E, Nothing)
+      run (Just $ Robot 0 0 N) t5 TurnRight `shouldBe` (Just $ Robot 0 0 E, Nothing)
 
   describe "Report Command" $ do
     it "doesn't report a robot off the board" $ do
@@ -84,6 +84,6 @@ main = hspec $ do
     it "First" $ do
       mockRun [Place 0 0 N, Move, Report] `shouldBe` ["0, 1, NORTH"]
     it "Second" $ do
-      mockRun [Place 0 0 N, Lib.Left, Report] `shouldBe` ["0, 0, WEST"]
+      mockRun [Place 0 0 N, TurnLeft, Report] `shouldBe` ["0, 0, WEST"]
     it "Third" $ do
-      mockRun [Place 1 2 E, Move, Move, Lib.Left, Move, Report] `shouldBe` ["3, 3, NORTH"]
+      mockRun [Place 1 2 E, Move, Move, TurnLeft, Move, Report] `shouldBe` ["3, 3, NORTH"]

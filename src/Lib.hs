@@ -64,7 +64,7 @@ move :: Robot -> Robot
 move (Robot x y d) =
   Robot x' y' d where (x', y') = move' (x, y) d
 
-data Command = Place Int Int Direction | Move | Left | Right | Report
+data Command = Place Int Int Direction | Move | TurnLeft | TurnRight | Report
 
 data Table = Table Int
 
@@ -77,6 +77,6 @@ run (Just (Robot x y d)) table command =
     Place x' y' d' -> if onTheTable (x', y') table then (Just $ Robot x' y' d', Nothing) else (Just $ Robot x y d, Nothing)
     Move -> if onTheTable (x', y') table then (Just $ Robot x' y' d, Nothing) else (Just $ Robot x y d, Nothing)
       where (x', y') = move' (x, y) d
-    Lib.Left -> (Just $ left (Robot x y d), Nothing)
-    Lib.Right-> (Just $ right (Robot x y d), Nothing)
+    TurnLeft -> (Just $ left (Robot x y d), Nothing)
+    TurnRight-> (Just $ right (Robot x y d), Nothing)
     Report -> (Just $ Robot x y d, Just $ show (Robot x y d))
