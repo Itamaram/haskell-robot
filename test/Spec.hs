@@ -1,5 +1,5 @@
 import Test.Hspec
-import Lib
+import Robot
 
 t5 = Table 5
 

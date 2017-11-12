@@ -1,4 +1,4 @@
-module Lib where
+module Robot where
 
 import System.Exit (exitSuccess)
 import Control.Monad (forever)
@@ -27,7 +27,8 @@ loop robot table = forever $ do
                 (r, Just s) -> do
                   putStrLn s
                   loop r table
-                (r, _) -> loop r table
+                (r, _)      ->
+                  loop r table
     Nothing -> putStrLn "Failed to parse command, enter nothing to terminate"
 
 checkForExit :: String -> IO ()
