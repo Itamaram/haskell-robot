@@ -87,3 +87,19 @@ main = hspec $ do
       mockRun [Place 0 0 N, TurnLeft, Report] `shouldBe` ["0, 0, WEST"]
     it "Third" $ do
       mockRun [Place 1 2 E, Move, Move, TurnLeft, Move, Report] `shouldBe` ["3, 3, NORTH"]
+
+  describe "parsePlace" $ do
+    it "Parse Move" $ do
+      parseCommand "MOVE" `shouldBe` Just Move
+    it "Parse TurnLeft" $ do
+      parseCommand "LEFT" `shouldBe` Just TurnLeft
+    it "Parse TurnRight" $ do
+      parseCommand "RIGHT" `shouldBe` Just TurnRight
+    it "Parse Report" $ do
+      parseCommand "REPORT" `shouldBe` Just Report
+    it "Parse Place" $ do
+      parseCommand "PLACE 1,2,NORTH" `shouldBe` Just (Place 1 2 N)
+    it "Fail to parse Place" $ do
+      parseCommand "PLACE 1,2,AFRICA" `shouldBe` Nothing
+    it "Fail to parse Command" $ do
+      parseCommand "BARRELROLL" `shouldBe` Nothing

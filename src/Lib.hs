@@ -1,11 +1,54 @@
 module Lib where
 
-import Text.Printf
+import System.Exit (exitSuccess)
+import Control.Monad (forever)
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+parseCommand :: String -> Maybe Command
+parseCommand s 
+  | s == "MOVE"          = Just Move
+  | s == "LEFT"          = Just TurnLeft
+  | s == "RIGHT"         = Just TurnRight
+  | s == "REPORT"        = Just Report
+  | take 6 s == "PLACE " = parsePlace s
+  | otherwise            = Nothing
+
+parsePlace :: String -> Maybe Command
+parsePlace s 
+  | length parts /= 3 = Nothing
+  | otherwise = Just $ Place (read (parts !! 0)) (read (parts !! 1)) (parseDirection (parts !! 2))
+  where parts = splitOnCommas $ drop 6 s
+
+loop :: Maybe Robot -> Table -> IO ()
+loop robot table = forever $ do
+  line <- getLine
+  checkForExit line
+  case parseCommand line of
+    Just c  -> case run robot table c of
+                (r, Just s) -> do
+                  putStrLn s
+                  loop r table
+                (r, _) -> loop r table
+    Nothing -> putStrLn "Failed to parse command, enter nothing to terminate"
+
+checkForExit :: String -> IO ()
+checkForExit s = if s == "" then
+  do exitSuccess
+  else return ()
+
+splitOnCommas :: String -> [String]
+splitOnCommas s = case dropWhile (== ',') s of
+  "" -> []
+  s' -> w : splitOnCommas s''
+        where (w, s'') = break (== ',') s'
 
 data Direction = N | E | S | W deriving Eq
+
+parseDirection :: String -> Direction
+parseDirection s = case s of
+  "NORTH" -> N
+  "EAST"  -> E
+  "SOUTH" -> S
+  "WEST"  -> W
 
 instance Show Direction where
   show d = case d of
@@ -50,7 +93,7 @@ data Robot = Robot {
   deriving Eq
 
 instance Show Robot where
-  show (Robot x y d) = printf "%d, %d, %s" x y (show d)
+  show (Robot x y d) = (show x) ++ ", " ++ (show y) ++ ", " ++ (show d)
 
 left :: Robot -> Robot
 left (Robot x y d) =
@@ -64,7 +107,7 @@ move :: Robot -> Robot
 move (Robot x y d) =
   Robot x' y' d where (x', y') = move' (x, y) d
 
-data Command = Place Int Int Direction | Move | TurnLeft | TurnRight | Report
+data Command = Place Int Int Direction | Move | TurnLeft | TurnRight | Report deriving (Eq, Show)
 
 data Table = Table Int
 
